@@ -59,6 +59,10 @@ public class ProdutoService {
         BigDecimal custo = produto.getPrecoCusto()!= null ? produto.getPrecoCusto() : BigDecimal.ZERO;
         BigDecimal venda = produto.getPrecoVenda() != null ? produto.getPrecoVenda() : BigDecimal.ZERO;
         String nomeCat = (produto.getCategoria() != null) ? produto.getCategoria().getNome() : "Sem Categoria";
+        Double atual = produto.getEstoqueAtual() != null ? produto.getEstoqueAtual() : 0.0;
+        Double minimo = produto.getEstoqueMinimo() != null? produto.getEstoqueMinimo() : 0.0;
+
+        Boolean alerta = atual <= minimo;
 
         BigDecimal lucro = venda.subtract(custo);
 
@@ -75,7 +79,9 @@ public class ProdutoService {
                 produto.getTipo(),
                 custo,
                 venda,
-                produto.getEstoqueAtual(),
+                atual,
+                minimo,
+                alerta,
                 lucro,
                 margem,
                 nomeCat

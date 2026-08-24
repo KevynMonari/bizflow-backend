@@ -31,6 +31,16 @@ public class Produto {
         return id;
     }
 
+    private Double estoqueMinimo = 0.0;
+
+    public Double getEstoqueMinimo() {
+        return estoqueMinimo;
+    }
+
+    public void setEstoqueMinimo(Double estoqueMinimo) {
+        this.estoqueMinimo = estoqueMinimo;
+    }
+
     public Categoria getCategoria() {
         return categoria;
     }

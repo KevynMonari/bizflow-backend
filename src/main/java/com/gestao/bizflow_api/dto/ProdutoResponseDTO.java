@@ -11,6 +11,8 @@ public record ProdutoResponseDTO(
         BigDecimal precoCusto,
         BigDecimal precoVenda,
         Double estoqueAtual,
+        Double estoqueMinimo,
+        Boolean alertaEstoqueBaixo,
         BigDecimal lucroBruto,
         BigDecimal margemLucroPercentual,
         String nomeCategoria
