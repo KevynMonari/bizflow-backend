@@ -3,6 +3,7 @@ package com.gestao.bizflow_api.service;
 import com.gestao.bizflow_api.dto.ItemVendaRequestDTO;
 import com.gestao.bizflow_api.dto.MovimentacaoRequestDTO;
 import com.gestao.bizflow_api.dto.VendaRequestDTO;
+import com.gestao.bizflow_api.exception.EntidadeNaoEncontradaException;
 import com.gestao.bizflow_api.model.ItemVenda;
 import com.gestao.bizflow_api.model.Produto;
 import com.gestao.bizflow_api.model.TipoMovimentacao;
@@ -37,7 +38,7 @@ public class VendaService {
 
         for (ItemVendaRequestDTO itemDTO : request.itens()) {
             Produto produto = produtoRepository.findById(itemDTO.produtoId())
-            .orElseThrow(() -> new RuntimeException("Produto não encontrado com ID: " + itemDTO.produtoId()));
+            .orElseThrow(() -> new EntidadeNaoEncontradaException("Produto não encontrado com ID: " + itemDTO.produtoId()));
 
             estoqueService.registrarMovimentacao(new MovimentacaoRequestDTO(
                     produto.getId(),

@@ -1,6 +1,8 @@
 package com.gestao.bizflow_api.service;
 
 import com.gestao.bizflow_api.dto.MovimentacaoRequestDTO;
+import com.gestao.bizflow_api.exception.EntidadeNaoEncontradaException;
+import com.gestao.bizflow_api.exception.EstoqueInsuficienteException;
 import com.gestao.bizflow_api.model.MovimentacaoEstoque;
 import com.gestao.bizflow_api.model.Produto;
 import com.gestao.bizflow_api.repository.MovimentacaoEstoqueRepository;
@@ -24,7 +26,7 @@ public class EstoqueService {
     @Transactional
     public MovimentacaoEstoque registrarMovimentacao(MovimentacaoRequestDTO request){
         Produto produto = produtoRepository.findById(request.produtoId())
-                .orElseThrow(() -> new RuntimeException("Produto não encontrado com o ID " + request.produtoId()));
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Produto não encontrado com o ID " + request.produtoId()));
 
         Double quantidadeAtual = produto.getEstoqueAtual() != null ? produto.getEstoqueAtual() : 0.0;
 
@@ -32,7 +34,7 @@ public class EstoqueService {
             case ENTRADA -> produto.setEstoqueAtual(quantidadeAtual + request.quantidade());
             case SAIDA, PERDA -> {
                 if (quantidadeAtual < request.quantidade()) {
-                    throw new RuntimeException("Estoque insuficiente! Estoque atual: " + quantidadeAtual);
+                    throw new EstoqueInsuficienteException("Estoque insuficiente! Estoque atual: " + quantidadeAtual);
                 }
                 produto.setEstoqueAtual(quantidadeAtual - request.quantidade());
             }
